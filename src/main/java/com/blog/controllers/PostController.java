@@ -14,7 +14,7 @@ public class PostController {
 
     private PostService postService;
 
-    public PostController (PostService postService) {
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
@@ -24,8 +24,11 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDTO>> getAllPosts() {
-        return ResponseEntity.ok(this.postService.getAllPosts());
+    public ResponseEntity<List<PostDTO>> getAllPosts(
+            @RequestParam(name = "pageNumber", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize
+    ) {
+        return ResponseEntity.ok(this.postService.getAllPosts(pageNumber, pageSize));
     }
 
     @GetMapping("/{id}")
