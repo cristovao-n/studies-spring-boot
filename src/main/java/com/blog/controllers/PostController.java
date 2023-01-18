@@ -1,5 +1,6 @@
 package com.blog.controllers;
 
+import com.blog.payloads.PaginatedResponse;
 import com.blog.payloads.PostDTO;
 import com.blog.services.PostService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDTO>> getAllPosts(
+    public ResponseEntity<PaginatedResponse<PostDTO>> getAllPosts(
             @RequestParam(name = "pageNumber", defaultValue = "0", required = false) int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize
     ) {

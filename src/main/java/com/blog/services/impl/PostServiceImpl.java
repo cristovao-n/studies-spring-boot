@@ -2,6 +2,7 @@ package com.blog.services.impl;
 
 import com.blog.entities.Post;
 import com.blog.exceptions.ResourceNotFoundException;
+import com.blog.payloads.PaginatedResponse;
 import com.blog.payloads.PostDTO;
 import com.blog.repositories.PostRepository;
 import com.blog.services.PostService;
@@ -32,11 +33,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getAllPosts(int pageNumber, int pageSize) {
+    public PaginatedResponse<PostDTO> getAllPosts(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Post> paginatedPosts = this.postRepository.findAll(pageable);
         List<Post> postsInPage = paginatedPosts.getContent();
-        return postsInPage.stream().map(post -> this.convertEntityToDTO(post)).collect(Collectors.toList());
+        List<PostDTO> postsDTOInPage = postsInPage.stream().map(post -> this.convertEntityToDTO(post)).collect(Collectors.toList());
+
+        PaginatedResponse<PostDTO> paginatedPostsResponse = new PaginatedResponse<>();
+        paginatedPostsResponse.setContent(postsDTOInPage);
+        paginatedPostsResponse.setPageNumber(paginatedPosts.getNumber());
+        paginatedPostsResponse.setPageSize(paginatedPosts.getSize());
+        paginatedPostsResponse.setTotalElements(paginatedPosts.getTotalElements());
+        paginatedPostsResponse.setTotalPages(paginatedPosts.getTotalPages());
+        paginatedPostsResponse.setFirstPage(paginatedPosts.isFirst());
+        paginatedPostsResponse.setLastPage(paginatedPosts.isLast());
+
+        return paginatedPostsResponse;
     }
 
     @Override

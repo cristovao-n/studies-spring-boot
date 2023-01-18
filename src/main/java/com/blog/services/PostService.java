@@ -1,5 +1,6 @@
 package com.blog.services;
 
+import com.blog.payloads.PaginatedResponse;
 import com.blog.payloads.PostDTO;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public interface PostService {
     PostDTO createPost(PostDTO postDTO);
 
-    List<PostDTO> getAllPosts(int pageNumber, int pageSize);
+    PaginatedResponse<PostDTO> getAllPosts(int pageNumber, int pageSize);
 
     PostDTO getPostById(long id);
 
