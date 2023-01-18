@@ -3,6 +3,7 @@ package com.blog.controllers;
 import com.blog.payloads.PaginatedResponse;
 import com.blog.payloads.PostDTO;
 import com.blog.services.PostService;
+import com.blog.utils.PaginationConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +27,12 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<PaginatedResponse<PostDTO>> getAllPosts(
-            @RequestParam(name = "pageNumber", defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize
+            @RequestParam(name = "pageNumber", defaultValue = PaginationConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = PaginationConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(name = "sortBy", defaultValue = PaginationConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(name = "sortDir", defaultValue = PaginationConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ) {
-        return ResponseEntity.ok(this.postService.getAllPosts(pageNumber, pageSize));
+        return ResponseEntity.ok(this.postService.getAllPosts(pageNumber, pageSize, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")

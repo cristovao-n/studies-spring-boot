@@ -8,7 +8,7 @@ import java.util.List;
 public interface PostService {
     PostDTO createPost(PostDTO postDTO);
 
-    PaginatedResponse<PostDTO> getAllPosts(int pageNumber, int pageSize);
+    PaginatedResponse<PostDTO> getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDirection);
 
     PostDTO getPostById(long id);
 
