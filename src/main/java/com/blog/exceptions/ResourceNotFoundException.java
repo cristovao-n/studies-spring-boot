@@ -3,13 +3,12 @@ package com.blog.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends BaseException {
     private String resourceName;
     private long id;
 
     public ResourceNotFoundException (String resourceName, long id) {
-        super(String.format("%s not found with id : '%s'", resourceName, id));
+        super("Resource not found", String.format("%s not found with id : '%s'", resourceName, id));
         this.resourceName = resourceName;
         this.id = id;
     }
