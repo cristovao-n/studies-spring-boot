@@ -1,18 +1,20 @@
 package com.blog.payloads;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class PostDTO {
     private Long id;
     @NotNull
+    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 256)
     private String title;
+
     @NotNull
+    @NotEmpty
+    @NotBlank
     @Size(min = 4, max = 256)
     private String description;
     @NotBlank()
