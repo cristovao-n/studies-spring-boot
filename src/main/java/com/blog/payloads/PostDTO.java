@@ -10,12 +10,12 @@ import lombok.Data;
 public class PostDTO {
     private Long id;
     @NotNull
-    @Min(2)
+    @Size(min = 2, max = 256)
     private String title;
     @NotNull
-    @Min(4)
+    @Size(min = 4, max = 256)
     private String description;
     @NotBlank()
-    @Size(min = 4, max = 256, message = "Post title must have between {min} and {max} characters.")
+    @Size(min = 4, max = 256, message = "Post content must have between {min} and {max} characters.")
     private String content;
 }
