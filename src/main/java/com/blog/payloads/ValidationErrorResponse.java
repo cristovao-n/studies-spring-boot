@@ -9,11 +9,13 @@ import java.util.Map;
 public class ValidationErrorResponse {
     private Date timestamp;
     private String endpoint;
+    private String exception;
     private ValidationErrorPayload error;
 
-    public ValidationErrorResponse(ValidationErrorPayload error, Date timestamp, String endpoint) {
+    public ValidationErrorResponse(ValidationErrorPayload error, Date timestamp, String endpoint, String exception) {
         this.timestamp = timestamp;
         this.endpoint = endpoint;
+        this.exception = exception;
         this.error = error;
     }
 
