@@ -7,9 +7,9 @@ public class ResourceNotFoundException extends BaseException {
     private String resourceName;
     private long id;
 
-    public ResourceNotFoundException (String resourceName, long id) {
-        super("Resource not found", String.format("%s not found with id : '%s'", resourceName, id));
-        this.resourceName = resourceName;
+    public ResourceNotFoundException (Class resourceClass, long id) {
+        super("Resource not found", String.format("%s not found with id : '%s'", resourceClass.getSimpleName(), id));
+        this.resourceName = resourceClass.getSimpleName();
         this.id = id;
     }
 

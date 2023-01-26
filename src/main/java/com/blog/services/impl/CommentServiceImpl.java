@@ -9,7 +9,6 @@ import com.blog.repositories.CommentRepository;
 import com.blog.repositories.PostRepository;
 import com.blog.services.CommentService;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDTO createComment(long postId, CommentDTO commentDTO) {
         Comment comment = this.convertDTOToEntity(commentDTO);
-        Post post = this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", postId));
+        Post post = this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException(Post.class, postId));
         comment.setPost(post);
         Comment savedComment = this.commentRepository.save(comment);
         return this.convertEntityToDTO(savedComment);
@@ -39,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDTO> getCommentsByPostId(long postId) {
-        this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", postId));
+        this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException(Post.class, postId));
         List<Comment> comments = this.commentRepository.findByPostId(postId);
         List<CommentDTO> commentsDTO = comments.stream().map(comment -> this.convertEntityToDTO(comment)).collect(Collectors.toList());
         return commentsDTO;
@@ -70,8 +69,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private Comment validateEntities(long postId, long commentId) {
-        Post post = this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", postId));
-        Comment comment = this.commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment", commentId));
+        Post post = this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException(Post.class, postId));
+        Comment comment = this.commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException(Comment.class, commentId));
 
         boolean commentBelongsToPost = comment.getPost().equals(post);
         if (!commentBelongsToPost) {
