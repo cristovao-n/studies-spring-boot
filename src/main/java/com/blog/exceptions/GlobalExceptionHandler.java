@@ -6,6 +6,7 @@ import com.blog.payloads.ValidationErrorPayload;
 import com.blog.payloads.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,6 +30,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBlogAPIException(BlogAPIException exception, WebRequest webRequest) {
         ErrorResponse errorResponse = this.makeErrorResponse(exception, webRequest);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException exception, WebRequest webRequest) {
+        ErrorPayload errorPayload = new ErrorPayload("Authentication error", exception.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(errorPayload, new Date(), webRequest.getDescription(false), exception.getClass().getSimpleName());
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
 
