@@ -11,8 +11,4 @@ public class BlogAPIException extends BaseException {
         super(title, description);
     }
 
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
 }
