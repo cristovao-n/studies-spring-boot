@@ -1,5 +1,6 @@
 package com.blog.controllers;
 
+import com.blog.payloads.JWTAuthResponse;
 import com.blog.payloads.LoginDTO;
 import com.blog.payloads.RegisterDTO;
 import com.blog.services.AuthService;
@@ -22,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping(value = {"/login", "/sign-in"})
-    public ResponseEntity<String> login (@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<JWTAuthResponse> login (@RequestBody LoginDTO loginDTO) {
         return ResponseEntity.ok(this.authService.login(loginDTO));
     }
 

@@ -3,10 +3,12 @@ package com.blog.services.impl;
 import com.blog.entities.Role;
 import com.blog.entities.User;
 import com.blog.exceptions.DataConflictException;
+import com.blog.payloads.JWTAuthResponse;
 import com.blog.payloads.LoginDTO;
 import com.blog.payloads.RegisterDTO;
 import com.blog.repositories.RoleRepository;
 import com.blog.repositories.UserRepository;
+import com.blog.security.JwtTokenProvider;
 import com.blog.services.AuthService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,25 +29,28 @@ public class AuthServiceImpl implements AuthService {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
+    private JwtTokenProvider jwtTokenProvider;
 
     public AuthServiceImpl (AuthenticationManager authenticationManager,
                             UserRepository userRepository,
                             RoleRepository roleRepository,
-                            PasswordEncoder passwordEncoder) {
+                            PasswordEncoder passwordEncoder,
+                            JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
-    public String login (LoginDTO loginDTO) {
+    public JWTAuthResponse login (LoginDTO loginDTO) {
         Authentication authentication = this.authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsernameOrEmail(), loginDTO.getPassword())
         );
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User logged-in successfully.";
+        String jwtToken = this.jwtTokenProvider.generateToken(authentication);
+        return new JWTAuthResponse(jwtToken);
     }
 
     @Override
